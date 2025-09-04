@@ -1,0 +1,166 @@
+/* Advanced Hover Effects */
+
+/* Tilt effect */
+.tilt-hover {
+  transition: transform 0.3s ease;
+  transform-style: preserve-3d;
+}
+
+.tilt-hover:hover {
+  transform: perspective(1000px) rotateX(5deg) rotateY(5deg) scale3d(1.05, 1.05, 1.05);
+}
+
+/* Glow border effect */
+.glow-border {
+  position: relative;
+  border: 2px solid transparent;
+  background: linear-gradient(var(--background), var(--background)) padding-box,
+              linear-gradient(45deg, #8b5cf6, #a78bfa) border-box;
+  transition: all 0.3s ease;
+}
+
+.glow-border:hover {
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+}
+
+/* Slide reveal effect */
+.slide-reveal {
+  position: relative;
+  overflow: hidden;
+}
+
+.slide-reveal::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.slide-reveal:hover::before {
+  left: 100%;
+}
+
+/* Morphing shadow */
+.morph-shadow {
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.morph-shadow:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+}
+
+/* Color shift effect */
+.color-shift {
+  background: linear-gradient(45deg, #8b5cf6, #a78bfa, #c4b5fd);
+  background-size: 300% 300%;
+  transition: background-position 0.5s ease;
+}
+
+.color-shift:hover {
+  background-position: 100% 0%;
+}
+
+/* Elastic scale */
+.elastic-scale {
+  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.elastic-scale:hover {
+  transform: scale(1.1);
+}
+
+/* Neon glow text */
+.neon-text {
+  color: #8b5cf6;
+  text-shadow: 
+    0 0 5px #8b5cf6,
+    0 0 10px #8b5cf6,
+    0 0 15px #8b5cf6;
+  transition: all 0.3s ease;
+}
+
+.neon-text:hover {
+  text-shadow: 
+    0 0 5px #a78bfa,
+    0 0 10px #a78bfa,
+    0 0 15px #a78bfa,
+    0 0 20px #a78bfa;
+}
+
+/* Liquid button effect */
+.liquid-button {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(45deg, #8b5cf6, #a78bfa);
+  transition: all 0.3s ease;
+}
+
+.liquid-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
+}
+
+.liquid-button:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* Parallax hover */
+.parallax-hover {
+  transition: transform 0.3s ease;
+  transform-style: preserve-3d;
+}
+
+.parallax-hover:hover {
+  transform: translateZ(20px) rotateX(10deg) rotateY(10deg);
+}
+
+.parallax-hover .parallax-layer {
+  transition: transform 0.3s ease;
+}
+
+.parallax-hover:hover .parallax-layer {
+  transform: translateZ(10px);
+}
+
+/* Breathing animation */
+.breathing {
+  animation: breathing 3s ease-in-out infinite;
+}
+
+@keyframes breathing {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+/* Typewriter effect */
+.typewriter {
+  overflow: hidden;
+  border-right: 2px solid #8b5cf6;
+  white-space: nowrap;
+  animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent; }
+  50% { border-color: #8b5cf6; }
+}

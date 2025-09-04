@@ -1,0 +1,54 @@
+/* Pure CSS Starfield - No JavaScript Required */
+.css-starfield {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.css-starfield::before,
+.css-starfield::after {
+  content: '';
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: #8b5cf6;
+  border-radius: 50%;
+  box-shadow: 
+    20px 30px 0 #8b5cf6, 40px 70px 0 #a78bfa, 90px 40px 0 #8b5cf6,
+    130px 80px 0 #c4b5fd, 160px 30px 0 #8b5cf6, 200px 90px 0 #a78bfa,
+    240px 50px 0 #8b5cf6, 280px 120px 0 #c4b5fd, 320px 80px 0 #8b5cf6,
+    360px 40px 0 #a78bfa, 400px 110px 0 #8b5cf6, 440px 70px 0 #c4b5fd,
+    480px 100px 0 #8b5cf6, 520px 60px 0 #a78bfa, 560px 130px 0 #8b5cf6,
+    600px 20px 0 #c4b5fd, 640px 90px 0 #8b5cf6, 680px 50px 0 #a78bfa,
+    720px 140px 0 #8b5cf6, 760px 80px 0 #c4b5fd, 800px 30px 0 #8b5cf6,
+    840px 100px 0 #a78bfa, 880px 60px 0 #8b5cf6, 920px 120px 0 #c4b5fd,
+    960px 40px 0 #8b5cf6, 1000px 90px 0 #a78bfa, 1040px 70px 0 #8b5cf6,
+    1080px 110px 0 #c4b5fd, 1120px 50px 0 #8b5cf6, 1160px 130px 0 #a78bfa;
+  animation: fall 15s linear infinite;
+}
+
+.css-starfield::after {
+  animation-delay: -7.5s;
+  animation-duration: 20s;
+  box-shadow: 
+    60px 10px 0 #8b5cf6, 100px 60px 0 #a78bfa, 140px 20px 0 #8b5cf6,
+    180px 100px 0 #c4b5fd, 220px 50px 0 #8b5cf6, 260px 110px 0 #a78bfa,
+    300px 70px 0 #8b5cf6, 340px 140px 0 #c4b5fd, 380px 90px 0 #8b5cf6,
+    420px 30px 0 #a78bfa, 460px 120px 0 #8b5cf6, 500px 80px 0 #c4b5fd,
+    540px 40px 0 #8b5cf6, 580px 100px 0 #a78bfa, 620px 60px 0 #8b5cf6,
+    660px 130px 0 #c4b5fd, 700px 20px 0 #8b5cf6, 740px 90px 0 #a78bfa,
+    780px 50px 0 #8b5cf6, 820px 110px 0 #c4b5fd, 860px 70px 0 #8b5cf6,
+    900px 140px 0 #a78bfa, 940px 30px 0 #8b5cf6, 980px 100px 0 #c4b5fd,
+    1020px 60px 0 #8b5cf6, 1060px 120px 0 #a78bfa, 1100px 80px 0 #8b5cf6,
+    1140px 40px 0 #c4b5fd, 1180px 90px 0 #8b5cf6, 1220px 150px 0 #a78bfa;
+}
+
+@keyframes fall {
+  0% { transform: translateY(-100vh); }
+  100% { transform: translateY(100vh); }
+}

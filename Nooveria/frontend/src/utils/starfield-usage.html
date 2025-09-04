@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Starfield Background</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            color: white;
+            overflow-x: hidden;
+        }
+        
+        .content {
+            position: relative;
+            z-index: 1;
+            padding: 50px;
+            text-align: center;
+        }
+        
+        .controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .control-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        
+        input, select, button {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #444;
+            background: #222;
+            color: white;
+            border-radius: 5px;
+        }
+        
+        button {
+            background: linear-gradient(45deg, #8b5cf6, #a78bfa);
+            border: none;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+        
+        button:hover {
+            background: linear-gradient(45deg, #a78bfa, #c4b5fd);
+        }
+        
+        .color-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5px;
+        }
+        
+        .color-btn {
+            padding: 10px;
+            border: 2px solid;
+            cursor: pointer;
+            text-align: center;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1>Animated Starfield Background</h1>
+        <p>A lightweight, customizable starfield animation using Canvas API</p>
+        <p>Use the controls on the right to customize the effect</p>
+    </div>
+
+    <div class="controls">
+        <h3>Starfield Controls</h3>
+        
+        <div class="control-group">
+            <label>Star Count: <span id="starCountValue">150</span></label>
+            <input type="range" id="starCount" min="50" max="300" value="150">
+        </div>
+        
+        <div class="control-group">
+            <label>Speed: <span id="speedValue">0.5</span></label>
+            <input type="range" id="speed" min="0.1" max="3" step="0.1" value="0.5">
+        </div>
+        
+        <div class="control-group">
+            <label>Direction:</label>
+            <select id="direction">
+                <option value="down">Down</option>
+                <option value="up">Up</option>
+                <option value="left">Left</option>
+                <option value="right">Right</option>
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <label>Colors:</label>
+            <div class="color-buttons">
+                <div class="color-btn" data-color="#8b5cf6" style="border-color: #8b5cf6; background: #8b5cf6;">Purple</div>
+                <div class="color-btn" data-color="#3b82f6" style="border-color: #3b82f6; background: #3b82f6;">Blue</div>
+                <div class="color-btn" data-color="#ffffff" style="border-color: #ffffff; background: #ffffff; color: black;">White</div>
+                <div class="color-btn" data-color="#ec4899" style="border-color: #ec4899; background: #ec4899;">Pink</div>
+            </div>
+        </div>
+        
+        <button onclick="resetToDefaults()">Reset to Defaults</button>
+    </div>
+
+    <script>
+        // Starfield Class (inline for demo)
+        class Starfield {
+            constructor(options = {}) {
+                this.canvas = options.canvas || this.createCanvas()
+                this.ctx = this.canvas.getContext('2d')
+                
+                this.starCount = options.starCount || 150
+                this.speed = options.speed || 0.5
+                this.starColor = options.starColor || '#8b5cf6'
+                this.glowSize = options.glowSize || 3
+                this.direction = options.direction || 'down'
+                
+                this.stars = []
+                this.animationId = null
+                
+                this.init()
+            }
+
+            createCanvas() {
+                const canvas = document.createElement('canvas')
+                canvas.style.position = 'fixed'
+                canvas.style.top = '0'
+                canvas.style.left = '0'
+                canvas.style.zIndex = '-1'
+                canvas.style.background = '#000000'
+                document.body.appendChild(canvas)
+                return canvas
+            }
+
+            init() {
+                this.resize()
+                this.createStars()
+                this.animate()
+                
+                window.addEventListener('resize', () => this.resize())
+            }
+
+            resize() {
+                this.canvas.width = window.innerWidth
+                this.canvas.height = window.innerHeight
+            }
+
+            createStars() {
+                this.stars = Array.from({ length: this.starCount }, () => ({
+                    x: Math.random() * this.canvas.width,
+                    y: Math.random() * this.canvas.height,
+                    size: Math.random() * 2 + 1,
+                    opacity: Math.random() * 0.8 + 0.2
+                }))
+            }
+
+            drawStar(star) {
+                const gradient = this.ctx.createRadialGradient(
+                    star.x, star.y, 0,
+                    star.x, star.y, this.glowSize
+                )
+                
+                const alpha = Math.floor(star.opacity * 255).toString(16).padStart(2, '0')
+                gradient.addColorStop(0, `${this.starColor}${alpha}`)
+                gradient.addColorStop(1, 'transparent')
+                
+                this.ctx.fillStyle = gradient
+                this.ctx.beginPath()
+                this.ctx.arc(star.x, star.y, this.glowSize, 0, Math.PI * 2)
+                this.ctx.fill()
+            }
+
+            updateStars() {
+                this.stars.forEach(star => {
+                    switch (this.direction) {
+                        case 'down':
+                            star.y += this.speed
+                            if (star.y > this.canvas.height + this.glowSize) {
+                                star.y = -this.glowSize
+                                star.x = Math.random() * this.canvas.width
+                            }
+                            break
+                        case 'up':
+                            star.y -= this.speed
+                            if (star.y < -this.glowSize) {
+                                star.y = this.canvas.height + this.glowSize
+                                star.x = Math.random() * this.canvas.width
+                            }
+                            break
+                        case 'left':
+                            star.x -= this.speed
+                            if (star.x < -this.glowSize) {
+                                star.x = this.canvas.width + this.glowSize
+                                star.y = Math.random() * this.canvas.height
+                            }
+                            break
+                        case 'right':
+                            star.x += this.speed
+                            if (star.x > this.canvas.width + this.glowSize) {
+                                star.x = -this.glowSize
+                                star.y = Math.random() * this.canvas.height
+                            }
+                            break
+                    }
+                })
+            }
+
+            animate() {
+                this.ctx.fillStyle = '#000000'
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
+                
+                this.updateStars()
+                this.stars.forEach(star => this.drawStar(star))
+                
+                this.animationId = requestAnimationFrame(() => this.animate())
+            }
+
+            updateConfig(options) {
+                Object.assign(this, options)
+                if (options.starCount && options.starCount !== this.starCount) {
+                    this.createStars()
+                }
+            }
+        }
+
+        // Initialize starfield
+        const starfield = new Starfield()
+
+        // Control handlers
+        document.getElementById('starCount').addEventListener('input', (e) => {
+            const value = parseInt(e.target.value)
+            document.getElementById('starCountValue').textContent = value
+            starfield.updateConfig({ starCount: value })
+        })
+
+        document.getElementById('speed').addEventListener('input', (e) => {
+            const value = parseFloat(e.target.value)
+            document.getElementById('speedValue').textContent = value
+            starfield.updateConfig({ speed: value })
+        })
+
+        document.getElementById('direction').addEventListener('change', (e) => {
+            starfield.updateConfig({ direction: e.target.value })
+        })
+
+        document.querySelectorAll('.color-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const color = btn.dataset.color
+                starfield.updateConfig({ starColor: color })
+                
+                // Update active state
+                document.querySelectorAll('.color-btn').forEach(b => b.style.opacity = '0.7')
+                btn.style.opacity = '1'
+            })
+        })
+
+        function resetToDefaults() {
+            starfield.updateConfig({
+                starCount: 150,
+                speed: 0.5,
+                starColor: '#8b5cf6',
+                direction: 'down'
+            })
+            
+            document.getElementById('starCount').value = 150
+            document.getElementById('starCountValue').textContent = 150
+            document.getElementById('speed').value = 0.5
+            document.getElementById('speedValue').textContent = 0.5
+            document.getElementById('direction').value = 'down'
+            
+            document.querySelectorAll('.color-btn').forEach(b => b.style.opacity = '0.7')
+            document.querySelector('[data-color="#8b5cf6"]').style.opacity = '1'
+        }
+
+        // Set initial active color
+        document.querySelector('[data-color="#8b5cf6"]').style.opacity = '1'
+        document.querySelectorAll('.color-btn:not([data-color="#8b5cf6"])').forEach(b => b.style.opacity = '0.7')
+    </script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+{
+  "pricing": {
+    "token_price_per_1k": 0.004,
+    "openai_cost_per_1k": 0.002
+  },
+  "roles": {
+    "anonymous": {
+      "daily_communal_limit_tokens": 3000,
+      "max_request_tokens": 1500,
+      "default_balance": 30000
+    },
+    "user": {
+      "daily_communal_limit_tokens": 20000,
+      "max_request_tokens": 4000,
+      "default_balance": 50000
+    },
+    "admin": {
+      "daily_communal_limit_tokens": 100000,
+      "max_request_tokens": 8000,
+      "default_balance": 100000
+    }
+  },
+  "limits": {
+    "max_concurrent_requests": 100,
+    "rate_limit_per_minute": 60,
+    "max_devices_per_user": 5
+  },
+  "features": {
+    "allow_anonymous_users": true,
+    "require_email_verification": false,
+    "enable_communal_fund": true
+  }
+}
